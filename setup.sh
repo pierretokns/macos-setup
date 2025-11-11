@@ -108,11 +108,14 @@ if command -v colima &>/dev/null; then
   if ! echo "$COLIMA_STATUS" | grep -qi 'running'; then
     echo "Starting Colima (rootless Docker VM)..."
     # Adjust resources as needed
-    colima start --runtime docker --cpus 4 --memory 4 --disk 60
+    colima start --runtime docker --cpus 4 --memory 8 --disk 60
   else
     echo "Colima already running."
   fi
 fi
+
+brew install docker-credential-helper
+docker-credential-osxkeychain version
 
 # If Docker Desktop was previously downloaded, warn user
 if [ -f ~/Downloads/Docker.dmg ]; then
@@ -158,3 +161,5 @@ wrangler login
 
 echo "Development setup complete! GUI apps may require drag-and-drop install."
 
+# https://vscode.dev/tunnel/ # setup remote tunnels
+# setup google chrome remote desktop
