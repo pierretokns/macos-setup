@@ -25,10 +25,6 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-# Install Node.js v24.11
-echo "Installing Node.js v24.11..."
-nvm install 24.11.0
-nvm use 24.11.0
 
 # Download and install VSCode without Homebrew (direct download, unzip to ~/Applications or ~/Desktop)
 if ! command -v code &>/dev/null; then
@@ -42,10 +38,12 @@ fi
 # Install Wrangler and GitHub CLI for Node 24.11, then for all LTS versions
 echo "Installing Wrangler CLI and GH CLI for Node 24.11 and all LTS versions..."
 # Install Wrangler for the last 2 LTS Node versions
-for version in "v18.16.1" "v20.3.1"; do
+for version in "24.11" "24" "v22" "v20"; do
   nvm install "$version"
   nvm use "$version"
+  npm install -g @anthropic-ai/claude-code
   npm install -g wrangler
+  npm install -g pnpm
 done
 
 
@@ -121,16 +119,8 @@ if [ -f ~/Downloads/Docker.dmg ]; then
   echo "Note: ~/Downloads/Docker.dmg exists. You are now using Colima (rootless) instead of Docker Desktop."
 fi
 
-# Download Llama Desktop (drag to install)
-if [ ! -e ~/Downloads/Llama.zip ]; then
-  echo "Downloading Llama Desktop (drag to install)..."
-  LLAMA_URL="https://github.com/llama/llama/releases/latest/download/Llama-macOS.zip"
-  curl -L $LLAMA_URL -o ~/Downloads/Llama.zip
-  unzip -q ~/Downloads/Llama.zip -d ~/Desktop
-  echo 'Llama Desktop unpacked on your Desktop. Move to Applications if you like.'
-fi
-
-#!/bin/bash
+brew install ollama
+# brew install --cask rancher # for docker desktop replacement bc using rootless lima for security reasons
 
 ZSHRC="$HOME/.zshrc"
 
